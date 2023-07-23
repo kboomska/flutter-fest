@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_fest/application/ui/screens/main_tabs/main_tabs_view_model.dart';
+import 'package:flutter_fest/application/ui/screens/main_tabs/shedule_widget.dart';
 import 'package:flutter_fest/resources/resources.dart';
 
 class MainTabsScreen extends StatelessWidget {
@@ -11,7 +12,42 @@ class MainTabsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      body: _BodyWidget(),
       bottomNavigationBar: _BottomNavigationBarHandler(),
+    );
+  }
+}
+
+class _BodyWidget extends StatelessWidget {
+  const _BodyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final currentIndex = context.select(
+      (MainTabsViewModel model) => model.currentTabIndex,
+    );
+
+    return IndexedStack(
+      index: currentIndex,
+      children: const [
+        SheduleWidget(),
+        Center(
+          child: Text(
+            '2',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+        Center(
+          child: Text(
+            '3',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
