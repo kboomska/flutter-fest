@@ -7,44 +7,38 @@ class SheduleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(AppImages.sheduleBg),
-          fit: BoxFit.none,
-          alignment: Alignment.topLeft,
-        ),
-      ),
-      child: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            const _LogoWidget(),
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: _SliverAppBarDelegate(),
+    final topInset = MediaQuery.of(context).padding.top;
+
+    return SafeArea(
+      top: false,
+      child: CustomScrollView(
+        slivers: [
+          const _LogoWidget(),
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _SliverAppBarDelegate(topInset: topInset),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Container(color: Colors.pink, height: 150),
+                Container(color: Colors.blue, height: 150),
+                Container(color: Colors.pink, height: 150),
+                Container(color: Colors.pink, height: 150),
+                Container(color: Colors.blue, height: 150),
+                Container(color: Colors.pink, height: 150),
+                Container(color: Colors.blue, height: 150),
+                Container(color: Colors.pink, height: 150),
+                Container(color: Colors.pink, height: 150),
+                Container(color: Colors.pink, height: 150),
+                Container(color: Colors.blue, height: 150),
+                Container(color: Colors.pink, height: 150),
+                Container(color: Colors.pink, height: 150),
+                Container(color: Colors.pink, height: 150),
+              ],
             ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Container(color: Colors.pink, height: 150),
-                  Container(color: Colors.blue, height: 150),
-                  Container(color: Colors.pink, height: 150),
-                  Container(color: Colors.pink, height: 150),
-                  Container(color: Colors.blue, height: 150),
-                  Container(color: Colors.pink, height: 150),
-                  Container(color: Colors.blue, height: 150),
-                  Container(color: Colors.pink, height: 150),
-                  Container(color: Colors.pink, height: 150),
-                  Container(color: Colors.pink, height: 150),
-                  Container(color: Colors.blue, height: 150),
-                  Container(color: Colors.pink, height: 150),
-                  Container(color: Colors.pink, height: 150),
-                  Container(color: Colors.pink, height: 150),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -62,12 +56,17 @@ class _LogoWidget extends StatelessWidget {
         height: 200,
         child: Stack(children: [
           Positioned(
-            top: 40,
+            top: 0,
+            left: 0,
+            child: Image.asset(AppImages.sheduleBg),
+          ),
+          Positioned(
+            top: 80,
             left: 20,
             child: Image.asset(AppImages.sheduleFfLogo),
           ),
           Positioned(
-            top: 20,
+            top: 60,
             right: 20,
             child: Image.asset(AppImages.sheduleSurfLogo),
           ),
@@ -79,12 +78,15 @@ class _LogoWidget extends StatelessWidget {
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final double _height = 56;
+  final double topInset;
+
+  const _SliverAppBarDelegate({required this.topInset});
 
   @override
-  double get minExtent => _height;
+  double get minExtent => _height + topInset;
 
   @override
-  double get maxExtent => _height;
+  double get maxExtent => _height + topInset;
 
   @override
   Widget build(
@@ -92,7 +94,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    return const _SectionButtonWidget();
+    return _SectionButtonWidget(topInset: topInset);
   }
 
   @override
@@ -102,52 +104,68 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class _SectionButtonWidget extends StatelessWidget {
-  const _SectionButtonWidget({super.key});
+  final double topInset;
+
+  const _SectionButtonWidget({super.key, required this.topInset});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      scrollDirection: Axis.horizontal,
-      itemCount: 5,
-      separatorBuilder: (context, index) {
-        return const SizedBox(width: 10);
-      },
-      itemBuilder: (context, index) {
-        return Center(
-          child: SizedBox(
-            height: 36,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(18),
-                gradient: const LinearGradient(
-                  begin: FractionalOffset(-1, 0),
-                  end: FractionalOffset(2.5, 0),
-                  colors: [Color(0xFF00BD13), Color(0xFF170AF4)],
+    const totalItem = 4;
+    const itemGradientWidth = 2;
+    const itemGradientStep = itemGradientWidth / 2;
+    const startGradientPoint = -itemGradientStep;
+    const endGradientPoint = totalItem * itemGradientWidth + itemGradientStep;
+
+    return ColoredBox(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: ListView.separated(
+        padding: EdgeInsets.only(left: 20, right: 20, top: topInset),
+        scrollDirection: Axis.horizontal,
+        itemCount: totalItem,
+        separatorBuilder: (context, index) {
+          return const SizedBox(width: 10);
+        },
+        itemBuilder: (context, index) {
+          final currentStartPoint =
+              startGradientPoint - index * itemGradientWidth;
+          final currentEndPoint = endGradientPoint + currentStartPoint;
+
+          return Center(
+            child: SizedBox(
+              height: 36,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18),
+                  gradient: LinearGradient(
+                    begin: FractionalOffset(currentStartPoint, 0),
+                    end: FractionalOffset(currentEndPoint, 0),
+                    colors: const [Color(0xFF00BD13), Color(0xFF170AF4)],
+                  ),
                 ),
-              ),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all(Colors.white),
-                  backgroundColor: MaterialStateProperty.all(Colors.white30),
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all(Colors.white),
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.transparent),
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
                     ),
+                    padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(horizontal: 16),
+                    ),
+                    elevation: MaterialStateProperty.all(0),
+                    minimumSize: MaterialStateProperty.all(Size.zero),
                   ),
-                  padding: MaterialStateProperty.all(
-                    const EdgeInsets.symmetric(horizontal: 16),
-                  ),
-                  elevation: MaterialStateProperty.all(0),
-                  minimumSize: MaterialStateProperty.all(Size.zero),
+                  child: Text('Section $index'),
                 ),
-                child: Text('Section $index'),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
