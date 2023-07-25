@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_fest/resources/app_typography.dart';
+
 class ScheduleRowSessionWidget extends StatelessWidget {
   const ScheduleRowSessionWidget({super.key});
 
@@ -36,12 +38,11 @@ class _SpeakerWidget extends StatelessWidget {
             width: avatarSize,
           ),
         ),
+        const SizedBox(width: 8),
         const Text(
           'Иннокентий Христорожденныйвсубботу',
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            color: Colors.white,
-          ),
+          style: AppTypography.sessionSpeakerActive,
         ),
       ],
     );
