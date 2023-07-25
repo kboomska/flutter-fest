@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_fest/application/ui/widgets/shedule_row/schedule_row_widget.dart';
 import 'package:flutter_fest/resources/resources.dart';
 
 class SheduleWidget extends StatelessWidget {
@@ -21,20 +22,12 @@ class SheduleWidget extends StatelessWidget {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                Container(color: Colors.pink, height: 150),
-                Container(color: Colors.blue, height: 150),
-                Container(color: Colors.pink, height: 150),
-                Container(color: Colors.pink, height: 150),
-                Container(color: Colors.blue, height: 150),
-                Container(color: Colors.pink, height: 150),
-                Container(color: Colors.blue, height: 150),
-                Container(color: Colors.pink, height: 150),
-                Container(color: Colors.pink, height: 150),
-                Container(color: Colors.pink, height: 150),
-                Container(color: Colors.blue, height: 150),
-                Container(color: Colors.pink, height: 150),
-                Container(color: Colors.pink, height: 150),
-                Container(color: Colors.pink, height: 150),
+                ScheduleRowWidget.single(),
+                ScheduleRowWidget.single(),
+                ScheduleRowWidget.single(),
+                ScheduleRowWidget.single(),
+                ScheduleRowWidget.single(),
+                ScheduleRowWidget.single(),
               ],
             ),
           ),
@@ -45,9 +38,7 @@ class SheduleWidget extends StatelessWidget {
 }
 
 class _LogoWidget extends StatelessWidget {
-  const _LogoWidget({
-    super.key,
-  });
+  const _LogoWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +97,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 class _SectionButtonWidget extends StatelessWidget {
   final double topInset;
 
-  const _SectionButtonWidget({super.key, required this.topInset});
+  const _SectionButtonWidget({required this.topInset});
 
   @override
   Widget build(BuildContext context) {

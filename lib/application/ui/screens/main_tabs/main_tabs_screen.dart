@@ -19,7 +19,7 @@ class MainTabsScreen extends StatelessWidget {
 }
 
 class _BodyWidget extends StatelessWidget {
-  const _BodyWidget({super.key});
+  const _BodyWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +53,7 @@ class _BodyWidget extends StatelessWidget {
 }
 
 class _BottomNavigationBarHandler extends StatelessWidget {
-  const _BottomNavigationBarHandler({
-    super.key,
-  });
+  const _BottomNavigationBarHandler();
 
   @override
   Widget build(BuildContext context) {
